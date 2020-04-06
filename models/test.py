@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--model', type=str, default='ResNet', help="model to be used")
     parser.add_argument('--use_gpu', action='store_true', help="whether use gpu")
-    parser.add_argument('--load_model_path', type=str, require=True, help="Path of trained model")
+    parser.add_argument('--load_model_path', type=str, required=True, help="Path of trained model")
 
     args = parser.parse_args()
     config = configs.DefaultConfig()
