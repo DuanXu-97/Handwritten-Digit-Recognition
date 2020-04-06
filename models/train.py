@@ -101,7 +101,6 @@ def train(args, config):
             valid_cm=str(valid_cm),
             valid_accuracy=valid_accuracy
         ))
-        print('', valid_accuracy)
         print("epoch:{epoch}, train_loss:{train_loss}, valid_loss:{valid_loss}, valid_accuracy:{valid_accuracy}".format(
             epoch=epoch,
             train_loss=train_loss_meter.value()[0],
