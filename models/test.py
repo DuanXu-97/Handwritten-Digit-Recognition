@@ -39,6 +39,9 @@ def test(args, config):
         y_pred.extend(test_logits.max(dim=1)[1].detach().tolist())
         test_confusion_matrix.add(test_logits.detach().squeeze(), test_label.type(t.LongTensor))
 
+    print(y_true[:100])
+    print(y_pred[:100])
+
     test_cm = test_confusion_matrix.value()
     test_metrics = dict()
     test_metrics['accuracy'] = 100. * (test_cm.diagonal().sum()) / (test_cm.sum())
