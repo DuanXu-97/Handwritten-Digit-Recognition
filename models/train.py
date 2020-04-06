@@ -108,7 +108,7 @@ def train(args, config):
             valid_loss=valid_loss_meter.value()[0],
             valid_accuracy=valid_accuracy
         ))
-        print("train_cm:\n{train_cm}n\nvalid_cm:\n{valid_cm}".format(
+        print("train_cm:\n{train_cm}\n\nvalid_cm:\n{valid_cm}".format(
             train_cm=str(train_confusion_matrix.value()),
             valid_cm=str(valid_cm),
         ))
