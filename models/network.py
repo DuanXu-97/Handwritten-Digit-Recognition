@@ -1,7 +1,6 @@
 import torch as t
 from torch import nn
 from torch.nn import functional as F
-from torchvision.models import resnet34
 
 
 class BasicModule(nn.Module):

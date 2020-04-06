@@ -3,8 +3,8 @@ from torch.utils.data import DataLoader
 from torchnet import meter
 
 import models
-from data.dataset import Minst
-from models.configs import opt
+from data.dataset import MNIST
+from models import configs
 
 def test(**kwargs):
     """

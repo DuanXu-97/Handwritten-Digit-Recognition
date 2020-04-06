@@ -8,8 +8,8 @@ from torch import nn
 from torch import optim
 from torch.utils.data import DataLoader
 from torchnet import meter
-import models.configs as configs
-import models.network as network
+from models import configs
+from models import network
 from data.dataset import MNIST
 from utils.visualize import Visualizer
 
