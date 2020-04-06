@@ -46,12 +46,12 @@ def test(args, config):
     test_metrics = dict()
     test_metrics['accuracy'] = 100. * (test_cm.diagonal().sum()) / (test_cm.sum())
     test_metrics['precision'], test_metrics['recall'], test_metrics['f1'] = dict(), dict(), dict()
-    test_metrics['precision']['micro'] = precision_score(y_true, y_pred, average='micro')
-    test_metrics['precision']['macro'] = precision_score(y_true, y_pred, average='macro')
-    test_metrics['recall']['micro'] = recall_score(y_true, y_pred, average='micro')
-    test_metrics['recall']['macro'] = recall_score(y_true, y_pred, average='macro')
-    test_metrics['f1']['micro'] = f1_score(y_true, y_pred, average='micro')
-    test_metrics['f1']['macro'] = f1_score(y_true, y_pred, average='macro')
+    test_metrics['precision']['micro'] = precision_score(y_true, y_pred, labels=list(range(0,10)), average='micro')
+    test_metrics['precision']['macro'] = precision_score(y_true, y_pred, labels=list(range(0,10)), average='macro')
+    test_metrics['recall']['micro'] = recall_score(y_true, y_pred, labels=list(range(0,10)), average='micro')
+    test_metrics['recall']['macro'] = recall_score(y_true, y_pred, labels=list(range(0,10)), average='macro')
+    test_metrics['f1']['micro'] = f1_score(y_true, y_pred, labels=list(range(0,10)), average='micro')
+    test_metrics['f1']['macro'] = f1_score(y_true, y_pred, labels=list(range(0,10)), average='macro')
 
     print("test_metrics:", test_metrics)
     print("test_cm:\n{test_cm}".format(
