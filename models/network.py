@@ -132,7 +132,7 @@ class ResNet50(BasicModule):
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
-        self.fc = nn.Linear(512, num_classes)
+        self.fc = nn.Linear(512 * 4, num_classes)
 
     def _make_layer(self, channel, block_num, stride=1):
 
