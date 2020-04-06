@@ -92,21 +92,25 @@ def train(args, config):
         valid_accuracy = 100. * (valid_cm.diagonal().sum()) / (valid_cm.sum())
 
         vis.plot('valid_accuracy', valid_accuracy)
-        print('valid_accuracy', valid_accuracy)
 
-        vis.log("epoch:{epoch}, lr:{lr}, train_loss:{train_loss}, train_cm:{train_cm}, valid_loss:{valid_loss}, valid_cm:{valid_cm}".format(
+        vis.log("epoch:{epoch}, train_loss:{train_loss}, train_cm:{train_cm}, valid_loss:{valid_loss}, valid_cm:{valid_cm}, valid_accuracy:{valid_accuracy}".format(
             epoch=epoch,
             train_loss=train_loss_meter.value()[0],
             train_cm=str(train_confusion_matrix.value()),
             valid_loss=valid_loss_meter.value()[0],
             valid_cm=str(valid_cm),
-            lr=config.lr
+            valid_accuracy=valid_accuracy
         ))
-        print("epoch:{epoch}, lr:{lr}, train_loss:{train_loss}, valid_loss:{valid_loss}".format(
+        print('', valid_accuracy)
+        print("epoch:{epoch}, train_loss:{train_loss}, valid_loss:{valid_loss}, valid_accuracy:{valid_accuracy}".format(
             epoch=epoch,
             train_loss=train_loss_meter.value()[0],
             valid_loss=valid_loss_meter.value()[0],
-            lr=config.lr
+            valid_accuracy=valid_accuracy
+        ))
+        print("train_cm:\n{train_cm}n\nvalid_cm:\n{valid_cm}".format(
+            train_cm=str(train_confusion_matrix.value()),
+            valid_cm=str(valid_cm),
         ))
 
         # early stop
