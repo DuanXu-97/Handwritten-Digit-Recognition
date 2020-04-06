@@ -3,13 +3,12 @@ import time
 import argparse
 import configs
 import torch as t
-from torch import configim
 from torch import nn
 from torch import optim
 from torch.utils.data import DataLoader
 from torchnet import meter
 
-from models.network import ResNet
+import network
 from data.dataset import MNIST
 from models.configs import ResNetConfig
 from utils.visualize import Visualizer
@@ -28,7 +27,7 @@ def train(args, config):
                                   shuffle=False,
                                   num_workers=config.num_workers)
 
-    model = ResNet()
+    model = getattr(network, args.model)().eval()
     if args.load_model_path:
         model.load(args.load_model_path)
     if args.use_gpu:
@@ -60,13 +59,13 @@ def train(args, config):
                 train_target = train_target.cuda()
 
             optimizer.zero_grad()
-            train_score = model(train_data)
-            train_loss = criterion(train_score, train_target)
+            train_logits, train_output = model(train_data)
+            train_loss = criterion(train_logits, train_target)
             train_loss.backward()
             optimizer.step()
 
             train_loss_meter.add(train_loss.item())
-            train_confusion_matrix.add(train_score.data, train_target.data)
+            train_confusion_matrix.add(train_logits.data, train_target.data)
 
             if iter % config.print_freq == 0:
                 vis.plot('train_loss', train_loss_meter.value()[0])
@@ -83,11 +82,11 @@ def train(args, config):
                 valid_data = valid_data.cuda()
                 valid_target = valid_target.cuda()
 
-            valid_score = model(valid_data)
-            valid_loss = criterion(valid_score, valid_target)
+            valid_logits, valid_output = model(valid_data)
+            valid_loss = criterion(valid_logits, valid_target)
 
             valid_loss_meter.add(valid_loss.item())
-            valid_confusion_matrix.add(valid_score.detach().squeeze(), valid_target.type(t.LongTensor))
+            valid_confusion_matrix.add(valid_logits.detach().squeeze(), valid_target.type(t.LongTensor))
 
         valid_cm = valid_confusion_matrix.value()
         valid_accuracy = 100. * (valid_cm.diagonal().sum()) / (valid_cm.sum())
