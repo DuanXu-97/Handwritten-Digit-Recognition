@@ -3,51 +3,64 @@ import argparse
 import torch as t
 from torch.utils.data import DataLoader
 from torchnet import meter
+from sklearn.metrics import precision_score, recall_score, f1_score
 
-import models
+from models import network
 from data.dataset import MNIST
 from models import configs
 
 
-def test(config):
-    opt.parse(kwargs)
+def test(args, config):
 
-    # configure model
-    model = getattr(models, opt.model)().eval()
-    if opt.load_model_path:
-        model.load(opt.load_model_path)
-    model.to(opt.device)
+    test_set = MNIST(data_path=config.test_data_path, label_path=config.test_label_path, config=config, mode='test')
+    test_dataloader = DataLoader(test_set, batch_size=config.batch_size, shuffle=False, num_workers=config.num_workers)
 
-    # data
-    test_data = MNIST(data_path=config.test_data_path, label_path=config.test_label_path, config=config, mode='test')
-    test_dataloader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
-    results = []
-    for ii, (input, path) in tqdm(enumerate(test_dataloader)):
-        if opt.use_gpu:
-            input = input.cuda()
-        score = model(input)
-        probability = t.nn.functional.softmax(score, dim=1)[:, 0].detach().tolist()
-        # label = score.max(dim = 1)[1].detach().tolist()
+    model = getattr(network, args.model)().eval()
+    if args.load_model_path:
+        model.load(config.load_model_path)
+    if args.use_gpu:
+        model.cuda()
 
-        batch_results = [(path_.item(), probability_) for path_, probability_ in zip(path, probability)]
+    y_true = []
+    y_pred = []
+    test_confusion_matrix = meter.ConfusionMeter(10)
+    test_confusion_matrix.reset()
 
-        results += batch_results
-    # write_csv(results, opt.result_file)
+    model.eval()
+    for _iter, (test_data, test_label) in enumerate(test_dataloader):
 
-    return results
+        if args.use_gpu:
+            test_data = test_data.cuda()
+
+        test_logits, test_output = model(test_data)
+        y_true.extend(test_label.numpy().tolist())
+        y_pred.extend(test_logits.max(dim=1)[1].detach().tolist())
+        test_confusion_matrix.add(test_logits.detach().squeeze(), test_label.type(t.LongTensor))
+
+    test_cm = test_confusion_matrix.value()
+    test_metrics = dict()
+    test_metrics['accuracy'] = 100. * (test_cm.diagonal().sum()) / (test_cm.sum())
+    test_metrics['precision']['micro'] = precision_score(y_true, y_pred, average='micro')
+    test_metrics['precision']['macro'] = precision_score(y_true, y_pred, average='macro')
+    test_metrics['recall']['micro'] = recall_score(y_true, y_pred, average='micro')
+    test_metrics['recall']['macro'] = recall_score(y_true, y_pred, average='macro')
+    test_metrics['f1']['micro'] = f1_score(y_true, y_pred, average='micro')
+    test_metrics['f1']['macro'] = f1_score(y_true, y_pred, average='macro')
+
+    print("test_metrics:", test_metrics)
+    print("test_cm:\n{test_cm}".format(
+        test_cm=str(test_cm),
+    ))
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--model', type=str, default='ResNet', help="model to be used")
     parser.add_argument('--use_gpu', action='store_true', help="whether use gpu")
-    parser.add_argument('--load_model_path', type=str, default=None, help="Path of pre-trained model")
-    parser.add_argument('--ckpts_dir', type=str, default=None, help="Dir to store checkpoints")
+    parser.add_argument('--load_model_path', type=str, require=True, help="Path of trained model")
 
     args = parser.parse_args()
     config = configs.DefaultConfig()
 
-    if not os.path.exists(args.ckpts_dir):
-        os.makedirs(args.ckpts_dir)
-
-    train(args, config)
+    test(args, config)

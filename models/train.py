@@ -17,13 +17,13 @@ from utils.visualize import Visualizer
 def train(args, config):
     vis = Visualizer()
 
-    train_data = MNIST(data_path=config.train_data_path, label_path=config.train_label_path, config=config, mode='train')
-    valid_data = MNIST(data_path=config.train_data_path, label_path=config.train_label_path, config=config, mode='valid')
+    train_set = MNIST(data_path=config.train_data_path, label_path=config.train_label_path, config=config, mode='train')
+    valid_set = MNIST(data_path=config.train_data_path, label_path=config.train_label_path, config=config, mode='valid')
 
-    train_dataloader = DataLoader(train_data, config.batch_size,
+    train_dataloader = DataLoader(train_set, config.batch_size,
                                   shuffle=True,
                                   num_workers=config.num_workers)
-    valid_dataloader = DataLoader(valid_data, config.batch_size,
+    valid_dataloader = DataLoader(valid_set, config.batch_size,
                                   shuffle=False,
                                   num_workers=config.num_workers)
 
@@ -52,7 +52,7 @@ def train(args, config):
         train_loss_meter.reset()
         train_confusion_matrix.reset()
 
-        for iter, (train_data, train_target) in enumerate(train_dataloader):
+        for _iter, (train_data, train_target) in enumerate(train_dataloader):
 
             if args.use_gpu:
                 train_data = train_data.cuda()
@@ -67,7 +67,7 @@ def train(args, config):
             train_loss_meter.add(train_loss.item())
             train_confusion_matrix.add(train_logits.data, train_target.data)
 
-            if iter % config.print_freq == 0:
+            if _iter % config.print_freq == 0:
                 vis.plot('train_loss', train_loss_meter.value()[0])
         model.save(path=os.path.join(args.ckpts_dir, 'model_{0}.pth'.format(str(epoch))))
 
@@ -76,7 +76,7 @@ def train(args, config):
         valid_loss_meter.reset()
         valid_confusion_matrix.reset()
 
-        for iter, (valid_data, valid_target) in enumerate(valid_dataloader):
+        for _iter, (valid_data, valid_target) in enumerate(valid_dataloader):
 
             if args.use_gpu:
                 valid_data = valid_data.cuda()
@@ -146,5 +146,8 @@ if __name__ == '__main__':
         os.makedirs(args.ckpts_dir)
 
     train(args, config)
+
+
+
 
 

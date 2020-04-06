@@ -108,7 +108,7 @@ class ResNet34(BasicModule):
         x = t.flatten(x, 1)
 
         logits = self.fc(x)
-        output = F.softmax(logits)
+        output = F.softmax(logits, dim=1)
 
         return logits, output
 
@@ -164,7 +164,7 @@ class ResNet50(BasicModule):
         x = t.flatten(x, 1)
 
         logits = self.fc(x)
-        output = F.softmax(logits)
+        output = F.softmax(logits, dim=1)
 
         return logits, output
 

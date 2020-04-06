@@ -9,7 +9,7 @@ class DefaultConfig(object):
     train_data_path = "../data/train/train-images.gz"
     train_label_path = "../data/train/train-labels.gz"
     test_data_path = "../data/test/test-images.gz"
-    test_label_path = "../data/test/test-label.gz"
+    test_label_path = "../data/test/test-labels.gz"
 
     num_channels = 1
     image_size = 28
