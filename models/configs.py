@@ -6,10 +6,10 @@ class DefaultConfig(object):
     num_workers = 2
     print_freq = 10
 
-    train_data_path = "data/train/train-images.gz"
-    train_label_path = "data/train/train-labels.gz"
-    test_data_path = "data/test/test-images.gz"
-    test_label_path = "data/test/test-label.gz"
+    train_data_path = "../data/train/train-images.gz"
+    train_label_path = "../data/train/train-labels.gz"
+    test_data_path = "../data/test/test-images.gz"
+    test_label_path = "../data/test/test-label.gz"
 
     image_size = 28
     pixel_depth = 255
