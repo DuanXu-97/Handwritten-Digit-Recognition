@@ -19,7 +19,7 @@ def test(args, config):
 
     model = getattr(network, args.model)().eval()
     if args.load_model_path:
-        model.load(config.load_model_path)
+        model.load(args.load_model_path)
     if args.use_gpu:
         model.cuda()
 
