@@ -39,7 +39,7 @@ def train(args, config):
     train_loss_meter, valid_loss_meter = meter.AverageValueMeter(), meter.AverageValueMeter()
     train_confusion_matrix, valid_confusion_matrix = meter.ConfusionMeter(10), meter.ConfusionMeter(10)
 
-    best_valid_loss = 0
+    best_valid_loss = 1e5
     best_epoch = 0
     dist_to_best = 0
 
