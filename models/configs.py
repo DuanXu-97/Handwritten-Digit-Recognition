@@ -1,5 +1,5 @@
 
-class ResNetConfig(object):
+class DefaultConfig(object):
     model = 'ResNet'
     load_model_path = None
     use_gpu = True
@@ -12,7 +12,6 @@ class ResNetConfig(object):
     test_label_path = "data/test/test-label.gz"
 
     image_size = 28
-    num_channels = 1
     pixel_depth = 255
     train_image_nums = 60000
     test_image_nums = 10000

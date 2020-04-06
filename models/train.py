@@ -1,16 +1,16 @@
+import sys
+sys.path.append('../')
 import os
 import time
 import argparse
-import configs
 import torch as t
 from torch import nn
 from torch import optim
 from torch.utils.data import DataLoader
 from torchnet import meter
-
-import network
+import models.configs as configs
+import models.network as network
 from data.dataset import MNIST
-from models.configs import ResNetConfig
 from utils.visualize import Visualizer
 
 
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     parser.add_argument('--ckpts_dir', type=str, default=None, help="Dir to store checkpoints")
 
     args = parser.parse_args()
-    config = configs.ResNetConfig()
+    config = configs.DefaultConfig()
 
     train(args, config)
 
