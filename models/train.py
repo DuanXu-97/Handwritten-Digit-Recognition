@@ -129,6 +129,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     config = configs.DefaultConfig()
 
+    if os.path.exists(args.ckpts_dir):
+        os.makedirs(args.ckpts_dir)
+
     train(args, config)
 
 
