@@ -97,7 +97,7 @@ def train(args, config):
             train_loss=train_loss_meter.value()[0],
             train_cm=str(train_confusion_matrix.value()),
             valid_loss=valid_loss_meter.value()[0],
-            valid_cm=str(valid_cm.value()),
+            valid_cm=str(valid_cm),
             lr=config.lr
         ))
 
@@ -110,7 +110,7 @@ def train(args, config):
         dist_to_best += 1
         if dist_to_best > 4:
             break
-            
+
     model.save(path=os.path.join(args.ckpts_dir, 'model.pth'))
     vis.save()
     print("save model successfully")
