@@ -110,12 +110,14 @@ def train(args, config):
         dist_to_best += 1
         if dist_to_best > 4:
             break
-
-        print("save model successfully")
-        print("best epoch: ", best_epoch)
-        print("best valid loss: ", best_valid_loss)
-        time_end = time.clock()
-        print('time cost: %.2f' % (time_end - time_begin))
+            
+    model.save(path=os.path.join(args.ckpts_dir, 'model.pth'))
+    vis.save()
+    print("save model successfully")
+    print("best epoch: ", best_epoch)
+    print("best valid loss: ", best_valid_loss)
+    time_end = time.clock()
+    print('time cost: %.2f' % (time_end - time_begin))
 
 
 if __name__ == '__main__':

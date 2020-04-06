@@ -11,6 +11,7 @@ class DefaultConfig(object):
     test_data_path = "../data/test/test-images.gz"
     test_label_path = "../data/test/test-label.gz"
 
+    num_channels = 1
     image_size = 28
     pixel_depth = 255
     train_image_nums = 60000

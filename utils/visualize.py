@@ -6,6 +6,7 @@ import visdom
 class Visualizer(object):
 
     def __init__(self, env="default", **kwargs):
+        self.env = env
         self.vis = visdom.Visdom(env=env, **kwargs)
         self.index = {}
         self.log_text = ''
@@ -38,6 +39,9 @@ class Visualizer(object):
     def log(self, info, win='log_text'):
         self.log_text += ('[{time}]{info}<br>'.format(time=time.strftime('%m%d_%H%M%S'), info=info))
         self.vis.text(self.log_text, win)
+
+    def save(self):
+        self.vis.save([self.env])
 
     def __getattr__(self, item):
         return getattr(self.vis, item)
