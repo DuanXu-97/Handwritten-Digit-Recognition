@@ -100,6 +100,14 @@ def train(args, config):
             valid_cm=str(valid_cm),
             lr=config.lr
         ))
+        print("epoch:{epoch}, lr:{lr}, train_loss:{train_loss}, train_cm:{train_cm}, valid_loss:{valid_loss}, valid_cm:{valid_cm}".format(
+            epoch=epoch,
+            train_loss=train_loss_meter.value()[0],
+            train_cm=str(train_confusion_matrix.value()),
+            valid_loss=valid_loss_meter.value()[0],
+            valid_cm=str(valid_cm),
+            lr=config.lr
+        ))
 
         # early stop
         if valid_loss_meter.value()[0] < best_valid_loss:
