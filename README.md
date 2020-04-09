@@ -57,9 +57,11 @@
 ## 结论
 针对传统图像处理方法无法有效识别手写数字的问题，本文利用深度学习技术，搭建34层和50层的残差网络，避免梯度消失的情况下，提取图像的高层特征，从而实现手写字体识别。在模型评估上，本文从准确率、精确率、召回率和F1分数和收敛速度等角度对模型的性能进行评估。实验结果表明，虽然ResNet50的收敛速度略慢于ResNet34，但由于其更强的特征学习能力，其准确率和Macro F1分数分别提高0.52%和0.54%，证明50层的残差网络比34层残差网络在手写数字识别上更具优势。
 
-参考文献
+## 参考文献
 [1] Lecun Y, Bottou L, Bengio Y, Haffner P. Gradient-based learning applied to document recognition. Proceedings of the IEEE, 1998, 86(11): 2278-2324.
+
 [2] Krizhevsky A, Sutskever I, Hinton G E. Imagenet classification with deep convolutional neural networks. Advances in neural information processing systems, 2012: 1097-1105.
+
 [3] He K, Zhang X, Ren S, Sun J. Deep residual learning for image recognition. Proceedings of the IEEE conference on computer vision and pattern recognition, 2016: 770-778.
 
 
